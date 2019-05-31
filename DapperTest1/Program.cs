@@ -9,13 +9,7 @@ namespace DapperTest1
     {
         static void Main(string[] args)
         {
-            try
-            {
-                TestQueries().Wait();
-            }
-            catch
-            {
-            }
+            TestQueries().Wait();
         }
 
         static async Task TestQueries()
@@ -54,7 +48,7 @@ namespace DapperTest1
 
             IEnumerable<Person> persons = await conn.QueryAsync<Person>(readMany);
 
-            Person terje = await conn.QuerySingleOrDefaultAsync<Person>(readOneByName, new {FirstName = "Terje"});
+            Person terje = await conn.QueryFirstOrDefaultAsync<Person>(readOneByName, new { FirstName = "Terje" });
 
             int rowsAffected2 = await conn.ExecuteAsync(update, new { FirstName = "Petter", LastName = "Pettersen", Id = terje.Id });
             persons = await conn.QueryAsync<Person>(readMany);
