@@ -10,6 +10,14 @@ namespace DapperTest1
         static void Main(string[] args)
         {
             TestQueries().Wait();
+
+            //var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=getit;Integrated Security=True;";
+            //var conn = new SqlConnection(connStr);
+            //var repo = new Repository<Person>(conn);
+            //repo.Create(new Person() {FirstName = "Terje", LastName = "Kolderup", BirthYear = 1975}).Wait();
+
+            //var carRepo= new CarRepository(conn);
+            //var cars = carRepo.ReadAll();
         }
 
         static async Task TestQueries()

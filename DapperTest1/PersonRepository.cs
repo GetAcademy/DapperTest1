@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Dapper;
 
@@ -16,9 +18,15 @@ namespace DapperTest1
 
         public async Task<int> Create(Person person)
         {
-            var sql = @"INSERT INTO Person (FirstName, LastName, BirthYear)
-                        VALUES (@FirstName, @LastName, @BirthYear)";
+            var type = person.GetType();
+            var props = type.GetProperties();
+            var sql = $"INSERT INTO {type.Name} ({GetParams(props)}) VALUES ({GetParams(props, true)})";
             return await _connection.ExecuteAsync(sql, person);
+        }
+
+        private static string GetParams(PropertyInfo[] props, bool includeAt = false)
+        {
+            return string.Join(',', props.Where(p => p.Name != "Id").Select(p => (includeAt ? "@" : "")+p.Name));
         }
 
         public async Task<IEnumerable<Person>> ReadAll()
@@ -54,7 +62,7 @@ namespace DapperTest1
         {
             var sql = @"DELETE FROM Person
                         WHERE Id = @Id";
-            return await _connection.ExecuteAsync(sql, person ?? (object)new {Id=id.Value});
+            return await _connection.ExecuteAsync(sql, person ?? (object)new { Id = id.Value });
         }
     }
 }
