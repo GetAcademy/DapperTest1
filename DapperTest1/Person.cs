@@ -3,8 +3,8 @@
     class Person
     {
         public int Id { get; set; }
-        public string Fornavn { get; set; }
-        public string Etternavn { get; set; }
-        public int Fødselsår { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int BirthYear { get; set; }
     }
 }
