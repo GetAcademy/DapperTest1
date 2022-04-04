@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Dapper;
+using DapperTest1.Builder;
 
 namespace DapperTest1
 {
@@ -9,7 +10,9 @@ namespace DapperTest1
     {
         static void Main(string[] args)
         {
-            TestQueries().Wait();
+            Sample.Demo1();
+            return;
+            TestQueries2().Wait();
 
             //var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=getit;Integrated Security=True;";
             //var conn = new SqlConnection(connStr);
@@ -20,9 +23,17 @@ namespace DapperTest1
             //var cars = carRepo.ReadAll();
         }
 
+        static async Task TestQueries2()
+        {
+            var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TerjeTest;Integrated Security=True";
+            var conn = new SqlConnection(connStr);
+
+            var repository = new Repository<Person>(conn);
+            var person = await repository.ReadOneById(1);
+        }
         static async Task TestQueries()
         {
-            var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=getit;Integrated Security=True;";
+            var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TerjeTest;Integrated Security=True";
             var conn = new SqlConnection(connStr);
 
             var readMany = @"SELECT Id, FirstName, LastName, BirthYear
